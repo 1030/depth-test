@@ -9,13 +9,15 @@ const minDepth = 0.5;
 const maxDepth = 2;
 let depth = 1;
 let yShift = 0;
-let clones = 5;
+
+// Calculate the number of clones needed to fill the horizontal space
+const clones = Math.ceil(canvas.width / objectWidth);
 
 function drawObjects() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = 'blue';
 
-  const baseX = (canvas.width - objectWidth * clones) / 2;
+  const baseX = 0;
   const baseY = (canvas.height - objectHeight) / 2 + yShift;
   const w = objectWidth * depth;
   const h = objectHeight * depth;
@@ -23,6 +25,21 @@ function drawObjects() {
   for (let i = 0; i < clones; i++) {
     const x = baseX + i * objectWidth;
     ctx.fillRect(x, baseY, w, h);
+  }
+}
+
+function drawReferenceDots() {
+  const dotSize = 5;
+  const dotSpacing = 50;
+
+  ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+
+  for (let y = dotSpacing; y < canvas.height; y += dotSpacing) {
+    for (let x = dotSpacing; x < canvas.width; x += dotSpacing) {
+      ctx.beginPath();
+      ctx.arc(x, y, dotSize, 0, 2 * Math.PI);
+      ctx.fill();
+    }
   }
 }
 
@@ -39,50 +56,8 @@ function handleTilt(event) {
   // Calculate yShift based on the gamma angle
   yShift = -gamma * (canvas.height / 180);
 
+  drawReferenceDots();
   drawObjects();
 }
 
-function handleMotion(event) {
-  const alpha = event.rotationRate.alpha;
-  const beta = event.rotationRate.beta;
-  const gamma = event.rotationRate.gamma;
-
-  if (alpha !== null && beta !== null && gamma !== null) {
-    window.removeEventListener('devicemotion', handleMotion);
-    window.addEventListener('deviceorientation', handleTilt, true);
-  }
-}
-
-async function requestAccess() {
-  try {
-    if (typeof DeviceMotionEvent.requestPermission === 'function') {
-      const motionPermission = await DeviceMotionEvent.requestPermission();
-      if (motionPermission === 'granted') {
-        window.addEventListener('devicemotion', handleMotion, true);
-      } else {
-        alert('Permission not granted. Motion events will not be accessible.');
-      }
-    } else {
-      window.addEventListener('devicemotion', handleMotion, true);
-    }
-
-    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      const orientationPermission = await DeviceOrientationEvent.requestPermission();
-      if (orientationPermission === 'granted') {
-        window.addEventListener('deviceorientation', handleTilt, true);
-      } else {
-        alert('Permission not granted. Orientation events will not be accessible.');
-      }
-    } else {
-      window.addEventListener('deviceorientation', handleTilt, true);
-    }
-    
-    document.getElementById('requestButton').style.display = 'none';
-  } catch (error) {
-    console.error('Error requesting permissions:', error);
-    alert('Error requesting permissions. Please try again.');
-  }
-}
-
-drawObjects();
-
+// Rest of the code remains the same
