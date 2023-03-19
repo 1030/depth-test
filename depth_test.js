@@ -11,22 +11,23 @@ let depth = 1;
 let yShift = 0;
 
 // Calculate the number of clones needed to fill the horizontal space
-const clones = Math.ceil(canvas.width / objectWidth);
+const clones = Math.ceil(canvas.height / objectHeight);
 
 function drawObjects() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = 'blue';
 
-  const baseX = 0;
-  const baseY = (canvas.height - objectHeight) / 2 + yShift;
+  const baseX = (canvas.width - objectWidth) / 2 + yShift;
+  const baseY = 0;
   const w = objectWidth * depth;
   const h = objectHeight * depth;
 
   for (let i = 0; i < clones; i++) {
-    const x = baseX + i * objectWidth;
-    ctx.fillRect(x, baseY, w, h);
+    const y = baseY + i * objectHeight;
+    ctx.fillRect(baseX, y, w, h);
   }
 }
+
 
 function drawReferenceDots() {
   const dotSize = 5;
