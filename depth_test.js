@@ -14,19 +14,22 @@ let yShift = 0;
 const clones = Math.ceil(canvas.height / objectHeight);
 
 function drawObjects() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'blue';
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'blue';
 
-  const baseX = (canvas.width - objectWidth) / 2 + yShift;
-  const baseY = 0;
-  const w = objectWidth * depth;
-  const h = objectHeight * depth;
+    const baseX = (canvas.width - objectWidth) / 2 + yShift;
+    const baseY = 0;
+    const w = objectWidth * depth;
+    const h = objectHeight * depth;
 
-  for (let i = 0; i < clones; i++) {
-    const y = baseY + i * objectHeight;
-    ctx.fillRect(baseX, y, w, h);
-  }
+    for (let i = 0; i < clones; i++) {
+        const y = baseY + i * objectHeight;
+        ctx.fillRect(baseX, y, w, h);
+    }
 }
+
+// Rest of the code remains the same
+
 
 
 function drawReferenceDots() {
