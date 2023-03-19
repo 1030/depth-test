@@ -25,6 +25,14 @@ function init() {
   }
 
   camera.position.z = 5;
+
+  document.getElementById('depthSlider').addEventListener('input', (event) => {
+    handleDepthSliderChange(event.target.value);
+  });
+
+  document.getElementById('positionSlider').addEventListener('input', (event) => {
+    handlePositionSliderChange(event.target.value);
+  });
 }
 
 function animate() {
