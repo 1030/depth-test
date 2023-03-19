@@ -2,44 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100vw;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
-        #container {
-            position: relative;
-            display: inline-block;
-        }
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        button {
-            position: absolute;
-            z-index: 1;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Depth Test</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
 </head>
 <body>
-    <div id="container">
-        <canvas id="myCanvas"></canvas>
-        <button id="requestButton" onclick="requestAccess()">Request Access</button>
+    <div style="position: fixed; z-index: 1000; padding: 10px;">
+        <label>
+            Depth:
+            <input type="range" min="0.5" max="2" step="0.01" value="1" oninput="handleDepthSliderChange(this.value)">
+        </label>
+        <br>
+        <label>
+            Position:
+            <input type="range" min="-2" max="2" step="0.01" value="0" oninput="handlePositionSliderChange(this.value)">
+        </label>
     </div>
     <script src="depth_test.js"></script>
 </body>
