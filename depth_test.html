@@ -15,22 +15,30 @@
             height: 100vh;
             background-color: #f0f0f0;
         }
+        #container {
+            position: relative;
+            display: inline-block;
+        }
         canvas {
             position: absolute;
             top: 0;
             left: 0;
-            z-index: -1;
         }
         button {
             position: absolute;
             z-index: 1;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
         }
     </style>
     <title>Depth Test</title>
 </head>
 <body>
-    <canvas id="myCanvas"></canvas>
-    <button id="requestButton" onclick="requestAccess()">Request Access</button>
+    <div id="container">
+        <canvas id="myCanvas"></canvas>
+        <button id="requestButton" onclick="requestAccess()">Request Access</button>
+    </div>
     <script src="depth_test.js"></script>
 </body>
 </html>
