@@ -9,17 +9,21 @@ const minDepth = 0.5;
 const maxDepth = 2;
 let depth = 1;
 let yShift = 0;
+let clones = 5;
 
-function drawObject() {
+function drawObjects() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = 'blue';
 
-  const x = (canvas.width - objectWidth) / 2;
-  const y = (canvas.height - objectHeight) / 2 + yShift;
+  const baseX = (canvas.width - objectWidth * clones) / 2;
+  const baseY = (canvas.height - objectHeight) / 2 + yShift;
   const w = objectWidth * depth;
   const h = objectHeight * depth;
 
-  ctx.fillRect(x, y, w, h);
+  for (let i = 0; i < clones; i++) {
+    const x = baseX + i * objectWidth;
+    ctx.fillRect(x, baseY, w, h);
+  }
 }
 
 function handleTilt(event) {
@@ -35,8 +39,19 @@ function handleTilt(event) {
   // Calculate yShift based on the gamma angle
   yShift = -gamma * (canvas.height / 180);
 
-  drawObject();
+  drawObjects();
 }
 
-window.addEventListener('deviceorientation', handleTilt, true);
-drawObject();
+function handleMotion(event) {
+  const alpha = event.rotationRate.alpha;
+  const beta = event.rotationRate.beta;
+  const gamma = event.rotationRate.gamma;
+
+  if (alpha !== null && beta !== null && gamma !== null) {
+    window.removeEventListener('devicemotion', handleMotion);
+    window.addEventListener('deviceorientation', handleTilt, true);
+  }
+}
+
+window.addEventListener('devicemotion', handleMotion, true);
+drawObjects();
