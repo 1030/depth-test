@@ -54,20 +54,35 @@ function handleMotion(event) {
 }
 
 async function requestAccess() {
-  if (typeof DeviceMotionEvent.requestPermission === 'function') {
-    const permissionState = await DeviceMotionEvent.requestPermission();
-    if (permissionState === 'granted') {
-      document.getElementById('requestButton').style.display = 'none';
-      window.addEventListener('deviceorientation', handleTilt, true);
-      window.addEventListener('devicemotion', handleMotion, true);
+  try {
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      const motionPermission = await DeviceMotionEvent.requestPermission();
+      if (motionPermission === 'granted') {
+        window.addEventListener('devicemotion', handleMotion, true);
+      } else {
+        alert('Permission not granted. Motion events will not be accessible.');
+      }
     } else {
-      alert('Permission not granted. Motion events will not be accessible.');
+      window.addEventListener('devicemotion', handleMotion, true);
     }
-  } else {
+
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      const orientationPermission = await DeviceOrientationEvent.requestPermission();
+      if (orientationPermission === 'granted') {
+        window.addEventListener('deviceorientation', handleTilt, true);
+      } else {
+        alert('Permission not granted. Orientation events will not be accessible.');
+      }
+    } else {
+      window.addEventListener('deviceorientation', handleTilt, true);
+    }
+    
     document.getElementById('requestButton').style.display = 'none';
-    window.addEventListener('deviceorientation', handleTilt, true);
-    window.addEventListener('devicemotion', handleMotion, true);
+  } catch (error) {
+    console.error('Error requesting permissions:', error);
+    alert('Error requesting permissions. Please try again.');
   }
 }
 
 drawObjects();
+
