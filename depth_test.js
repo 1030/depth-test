@@ -13,7 +13,7 @@ let clones = 5;
 
 function drawObjects() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'blue';
+  ctx.fillStyle = 'red';
 
   const baseX = (canvas.width - objectWidth * clones) / 2;
   const baseY = (canvas.height - objectHeight) / 2 + yShift;
