@@ -13,7 +13,7 @@ let clones = 5;
 
 function drawObjects() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'red';
+  ctx.fillStyle = 'blue';
 
   const baseX = (canvas.width - objectWidth * clones) / 2;
   const baseY = (canvas.height - objectHeight) / 2 + yShift;
@@ -53,5 +53,21 @@ function handleMotion(event) {
   }
 }
 
-window.addEventListener('devicemotion', handleMotion, true);
+async function requestAccess() {
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    const permissionState = await DeviceMotionEvent.requestPermission();
+    if (permissionState === 'granted') {
+      document.getElementById('requestButton').style.display = 'none';
+      window.addEventListener('deviceorientation', handleTilt, true);
+      window.addEventListener('devicemotion', handleMotion, true);
+    } else {
+      alert('Permission not granted. Motion events will not be accessible.');
+    }
+  } else {
+    document.getElementById('requestButton').style.display = 'none';
+    window.addEventListener('deviceorientation', handleTilt, true);
+    window.addEventListener('devicemotion', handleMotion, true);
+  }
+}
+
 drawObjects();
